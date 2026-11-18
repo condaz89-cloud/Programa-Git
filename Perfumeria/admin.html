@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Administración | Perfumería</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="index.html"
+        ><span class="mark">P</span
+        ><span>PERFUMERÍA<small>ADMINISTRACIÓN</small></span></a
+      >
+      <div class="side-label">GENERAL</div>
+      <button class="side-link active" data-view="dashboard">
+        ▦ <span>Resumen</span>
+      </button>
+      <div class="side-label">CATÁLOGO Y ABASTECIMIENTO</div>
+      <button class="side-link" data-view="products">
+        ◇ <span>Productos y presentaciones</span>
+      </button>
+      <button class="side-link" data-view="categories">
+        ▧ <span>Categorías</span>
+      </button>
+      <button class="side-link" data-view="brands">
+        ✧ <span>Marcas</span>
+      </button>
+      <button class="side-link" data-view="suppliers">
+        ♧ <span>Proveedores</span>
+      </button>
+      <button class="side-link" data-view="purchases">
+        ⇩ <span>Compras</span>
+      </button>
+      <div class="side-label">OPERACIÓN</div>
+      <button class="side-link" data-view="inventory">
+        ▤ <span>Inventario</span>
+      </button>
+      <button class="side-link" data-view="movements">
+        ↕ <span>Movimientos</span>
+      </button>
+      <button class="side-link" data-view="transfers">
+        ⇄ <span>Transferencias</span>
+      </button>
+      <button class="side-link" data-view="cash">
+        ▣ <span>Cajas y turnos</span>
+      </button>
+      <button class="side-link" data-view="sales">
+        ＄ <span>Ventas</span>
+      </button>
+      <button class="side-link" data-view="payments">
+        ▤ <span>Pagos y PayU</span>
+      </button>
+      <div class="side-label">DETALLES RELACIONADOS</div>
+      <button class="side-link" data-view="purchaseDetails">
+        ＋ <span>Detalle de compras</span>
+      </button>
+      <button class="side-link" data-view="saleDetails">
+        ＋ <span>Detalle de ventas</span>
+      </button>
+      <button class="side-link" data-view="transferDetails">
+        ＋ <span>Detalle de traslados</span>
+      </button>
+      <button class="side-link" data-view="addresses">
+        ⌂ <span>Direcciones de clientes</span>
+      </button>
+      <button class="side-link" data-view="productImages">
+        ▧ <span>Imágenes de productos</span>
+      </button>
+      <button class="side-link" data-view="supplierProducts">
+        ♧ <span>Productos por proveedor</span>
+      </button>
+      <div class="side-label">CLIENTES Y SEGURIDAD</div>
+      <button class="side-link" data-view="customers">
+        ♙ <span>Clientes y direcciones</span>
+      </button>
+      <button class="side-link" data-view="branches">
+        ⌖ <span>Sucursales y almacenes</span>
+      </button>
+      <button class="side-link" data-view="users">
+        ♟ <span>Usuarios y asignaciones</span>
+      </button>
+      <button class="side-link" data-view="roles">
+        ⚿ <span>Roles y permisos</span>
+      </button>
+      <button class="side-link" data-view="userRoles">
+        ♟ <span>Roles por usuario</span>
+      </button>
+      <button class="side-link" data-view="userBranches">
+        ⌖ <span>Usuarios por sucursal</span>
+      </button>
+      <button class="side-link" data-view="rolePermissions">
+        ⚿ <span>Permisos por rol</span>
+      </button>
+      <button class="side-link" data-view="audit">
+        ◷ <span>Auditoría</span>
+      </button>
+      <a class="back-store" href="index.html">← Volver a la tienda</a>
+      <div class="sidebar-user">
+        <div class="avatar">AD</div>
+        <div><b>Administrador demo</b><small>Vista de presentación</small></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="crumb">PERFUMERÍA /</span> <b id="pageName">Resumen</b>
+        </div>
+        <div class="top-actions">
+          <span>● MODO DEMOSTRACIÓN · SIN BACKEND</span
+          ><button aria-label="Notificaciones">♧</button>
+          <div class="avatar">AD</div>
+        </div>
+      </header>
+      <section class="content" id="viewContent"></section>
+    </main>
+    <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+      <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <header class="modal-head">
+          <div>
+            <span class="eyebrow">GESTIÓN DE DATOS</span>
+            <h2 id="modalTitle">Nuevo registro</h2>
+          </div>
+          <button class="icon-btn" id="closeModal" aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+        <form id="recordForm">
+          <div class="form-grid" id="formFields"></div>
+          <div class="modal-actions">
+            <button type="button" class="btn secondary" id="cancelModal">
+              Cancelar</button
+            ><button type="submit" class="btn">Guardar en demostración</button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

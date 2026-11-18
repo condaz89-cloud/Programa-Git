@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Perfumería — descubre fragancias para cada momento."
+    />
+    <title>Perfumería | Fragancias que cuentan historias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="announcement">
+      ENVÍO GRATIS EN COMPRAS SUPERIORES A $250.000 <span>·</span> COMPRA SEGURA
+    </div>
+    <header class="site-header">
+      <button
+        class="icon-btn mobile-menu"
+        id="mobileMenu"
+        aria-label="Abrir menú"
+      >
+        ☰
+      </button>
+      <a class="brand" href="index.html"
+        ><span class="brand-mark">P</span
+        ><span>PERFUMERÍA<small>ESENCIA & ELEGANCIA</small></span></a
+      >
+      <div class="search-wrap">
+        <span>⌕</span
+        ><input
+          id="searchInput"
+          type="search"
+          placeholder="Busca tu fragancia favorita..."
+          aria-label="Buscar productos"
+        /><kbd>⌘ K</kbd>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="accountBtn" aria-label="Cuenta">
+          ♙ <span>Mi cuenta</span></button
+        ><button
+          class="icon-btn cart-trigger"
+          id="cartBtn"
+          aria-label="Carrito"
+        >
+          ♧ <span>Bolsa</span><b id="cartCount">0</b>
+        </button>
+      </div>
+    </header>
+    <nav class="main-nav" id="mainNav">
+      <a class="active" href="#inicio">INICIO</a
+      ><a href="#catalogo" data-category="Todos">TODOS LOS PRODUCTOS</a
+      ><a href="#catalogo" data-category="Mujer">MUJER</a
+      ><a href="#catalogo" data-category="Hombre">HOMBRE</a
+      ><a href="#catalogo" data-category="Unisex">UNISEX</a
+      ><a href="#colecciones">COLECCIONES</a><a href="#footer">CONTACTO</a
+      ><a class="admin-link" href="admin.html">ADMINISTRACIÓN ↗</a>
+    </nav>
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-copy">
+          <span class="eyebrow">EL ARTE DE DEJAR HUELLA</span>
+          <h1>Tu esencia.<br /><em>Tu historia.</em></h1>
+          <p>
+            Fragancias cuidadosamente seleccionadas para acompañar los momentos
+            que te hacen único.
+          </p>
+          <a class="btn btn-dark" href="#catalogo"
+            >DESCUBRIR FRAGANCIAS <span>→</span></a
+          >
+          <div class="hero-note">
+            <span class="tiny-line"></span> UNA FRAGANCIA PARA CADA VERSIÓN DE
+            TI
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="hero-orbit"></div>
+          <div class="hero-image">
+            <img
+              src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85"
+              alt="Frasco de perfume elegante"
+            />
+          </div>
+          <div class="hero-stamp">SCENT<br />OF YOU<br /><b>№ 01</b></div>
+          <div class="hero-caption">EAU DE PARFUM · EDICIÓN ESPECIAL</div>
+        </div>
+      </section>
+      <section class="benefits">
+        <div>
+          <span>✧</span>
+          <p>
+            <b>Fragancias originales</b><small>Calidad y autenticidad</small>
+          </p>
+        </div>
+        <div>
+          <span>♧</span>
+          <p>
+            <b>Envíos a Colombia</b><small>Hasta la puerta de tu hogar</small>
+          </p>
+        </div>
+        <div>
+          <span>♡</span>
+          <p><b>Compra segura</b><small>Tu confianza es primero</small></p>
+        </div>
+        <div>
+          <span>✳</span>
+          <p><b>Asesoría experta</b><small>Encuentra tu aroma ideal</small></p>
+        </div>
+      </section>
+      <section class="section catalog-section" id="catalogo">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">NUESTRA SELECCIÓN</span>
+            <h2>Encuentra tu <em>fragancia</em></h2>
+          </div>
+          <a href="#catalogo" class="text-link" id="clearFilters"
+            >VER TODOS <span>→</span></a
+          >
+        </div>
+        <div class="catalog-tools">
+          <div class="category-pills" id="categoryPills">
+            <button class="pill selected" data-category="Todos">Todos</button
+            ><button class="pill" data-category="Mujer">Mujer</button
+            ><button class="pill" data-category="Hombre">Hombre</button
+            ><button class="pill" data-category="Unisex">Unisex</button>
+          </div>
+          <select id="sortSelect" aria-label="Ordenar productos">
+            <option value="featured">Ordenar: Destacados</option>
+            <option value="low">Menor precio</option>
+            <option value="high">Mayor precio</option>
+          </select>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+        <p class="empty-state" id="emptyState" hidden>
+          No encontramos productos con esos criterios.
+        </p>
+      </section>
+      <section class="collection-banner" id="colecciones">
+        <div class="collection-photo"></div>
+        <div class="collection-copy">
+          <span class="eyebrow">UNA EXPERIENCIA SENSORIAL</span>
+          <h2>Más que un aroma,<br /><em>una firma personal.</em></h2>
+          <p>
+            Explora nuestra selección y encuentra esa nota especial que habla de
+            ti, incluso antes de decir una palabra.
+          </p>
+          <a href="#catalogo" class="text-link"
+            >EXPLORAR COLECCIÓN <span>→</span></a
+          >
+        </div>
+      </section>
+      <section class="newsletter">
+        <span class="eyebrow">EL UNIVERSO DE LAS FRAGANCIAS</span>
+        <h2>Un toque de inspiración<br />en tu correo.</h2>
+        <p>Conoce novedades, lanzamientos y recomendaciones.</p>
+        <form id="newsletterForm">
+          <input
+            type="email"
+            placeholder="Tu correo electrónico"
+            required
+          /><button class="btn btn-dark">SUSCRIBIRME →</button>
+        </form>
+        <small id="newsletterMsg"
+          >Al suscribirte aceptas nuestra política de privacidad.</small
+        >
+      </section>
+    </main>
+    <footer id="footer">
+      <a class="brand footer-brand" href="#inicio"
+        ><span class="brand-mark">P</span
+        ><span>PERFUMERÍA<small>ESENCIA & ELEGANCIA</small></span></a
+      >
+      <p>Fragancias que cuentan historias.</p>
+      <div class="footer-bottom">
+        <span>© 2026 Perfumería. Todos los derechos reservados.</span
+        ><span>Política de privacidad · Términos y condiciones</span>
+      </div>
+    </footer>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras">
+      <div class="drawer-head">
+        <h3>Tu bolsa <span id="drawerCount">(0)</span></h3>
+        <button class="icon-btn" id="closeCart" aria-label="Cerrar">✕</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="subtotal">
+          <span>Subtotal</span><b id="cartSubtotal">$0</b>
+        </div>
+        <p>Los costos de envío se calculan al finalizar la compra.</p>
+        <button class="btn btn-dark full" id="checkoutBtn">
+          CONTINUAR COMPRA →
+        </button>
+      </div>
+    </aside>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal">
+        <button class="modal-close" id="closeModal">✕</button
+        ><span class="eyebrow">BIENVENIDO</span>
+        <h2>Tu cuenta Perfumería</h2>
+        <p>
+          Esta vista es una demostración visual. La autenticación se conectará
+          al backend en la siguiente etapa.
+        </p>
+        <form id="loginDemo">
+          <label
+            >Correo electrónico<input
+              type="email"
+              required
+              placeholder="nombre@correo.com" /></label
+          ><label
+            >Contraseña<input
+              type="password"
+              required
+              placeholder="••••••••" /></label
+          ><button class="btn btn-dark full">INGRESAR</button>
+        </form>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="js/app.js"></script>
+  </body>
+</html>
