@@ -1134,6 +1134,75 @@ let data =
 function save() {
   localStorage.setItem("perfumeria_v2_demo", JSON.stringify(data));
 }
+
+// Conexión con la API de Laravel
+const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
+
+async function apiRequest(endpoint, options = {}) {
+  const token = sessionStorage.getItem("perfumeria_token");
+
+  if (!token) {
+    throw new Error("No hay una sesión activa. Inicia sesión nuevamente.");
+  }
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...options.headers,
+    },
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Error al comunicarse con el servidor.");
+  }
+
+  return result;
+}
+
+// Consultar categorías desde MySQL
+async function loadCategories() {
+  try {
+    const result = await apiRequest("/categories");
+
+    data.categories = result.data;
+
+    renderModule("categories");
+
+    console.log("Categorías cargadas desde Laravel:", data.categories);
+  } catch (error) {
+    console.error("Error consultando categorías:", error);
+    notify(error.message);
+  }
+}
+
+// Registrar una categoría
+async function createCategory(category) {
+  return await apiRequest("/categories", {
+    method: "POST",
+    body: JSON.stringify(category),
+  });
+}
+
+// Actualizar una categoría
+async function updateCategory(id, category) {
+  return await apiRequest(`/categories/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(category),
+  });
+}
+
+// Desactivar una categoría
+async function deactivateCategory(id) {
+  return await apiRequest(`/categories/${id}`, {
+    method: "DELETE",
+  });
+}
+
 function labelFor(cfg, row) {
   if (cfg === "products") return row.nombre;
   if (cfg === "presentations") return row.sku + " · " + row.nombre_presentacion;
@@ -1331,48 +1400,119 @@ function notify(t) {
   clearTimeout(window.toastTimer);
   window.toastTimer = setTimeout(() => el.classList.remove("show"), 2800);
 }
-document
-  .querySelectorAll(".side-link")
-  .forEach((b) => b.addEventListener("click", () => render(b.dataset.view)));
-$("#viewContent").addEventListener("click", (e) => {
-  const edit = e.target.closest("[data-edit]"),
-    del = e.target.closest("[data-delete]");
-  if (edit) openForm(activeView, edit.dataset.edit);
+
+document.querySelectorAll(".side-link").forEach((b) =>
+  b.addEventListener("click", async () => {
+    const view = b.dataset.view;
+
+    if (view === "categories") {
+      activeView = view;
+      await loadCategories();
+      return;
+    }
+
+    render(view);
+  }),
+);
+
+$("#viewContent").addEventListener("click", async (e) => {
+  const edit = e.target.closest("[data-edit]");
+  const del = e.target.closest("[data-delete]");
+
+  if (edit) {
+    openForm(activeView, edit.dataset.edit);
+    return;
+  }
+
   if (del) {
     const c = configs[activeView];
-    if (
-      confirm("¿Eliminar este registro de los datos locales de demostración?")
-    ) {
+    const id = del.dataset.delete;
+
+    if (activeView === "categories") {
+      if (!confirm("¿Deseas desactivar esta categoría?")) return;
+
+      try {
+        await deactivateCategory(id);
+        await loadCategories();
+        notify("Categoría desactivada correctamente.");
+      } catch (error) {
+        notify(error.message);
+      }
+
+      return;
+    }
+
+    // Comportamiento local de los demás módulos
+    if (confirm("¿Eliminar este registro de los datos locales de demostración?")) {
       data[activeView] = data[activeView].filter(
-        (x) => String(x[c.key]) !== String(del.dataset.delete),
+        (x) => String(x[c.key]) !== String(id)
       );
+
       save();
       render(activeView);
       notify("Registro eliminado de la demostración.");
     }
   }
 });
-$("#recordForm").addEventListener("submit", (e) => {
+
+$("#recordForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const c = configs[activeView],
-    fd = new FormData(e.target),
-    obj = {};
+
+  const c = configs[activeView];
+  const fd = new FormData(e.target);
+  const obj = {};
+
   for (const f of c.fields) {
     let v = fd.get(f[0]);
+
     if (v !== null && v !== "") {
       if (f[2] === "number") v = Number(v);
       obj[f[0]] = v;
     }
   }
+
+  // Operaciones reales para categorías mediante Laravel
+  if (activeView === "categories") {
+    try {
+      const category = {
+        id_categoria_padre: obj.id_categoria_padre
+          ? Number(obj.id_categoria_padre)
+          : null,
+        nombre: obj.nombre.trim(),
+        descripcion: obj.descripcion?.trim() || null,
+        activo: Number(obj.activo ?? 1)
+      };
+
+      if (editId) {
+        await updateCategory(editId, category);
+        notify("Categoría actualizada correctamente.");
+      } else {
+        await createCategory(category);
+        notify("Categoría creada correctamente.");
+      }
+
+      closeForm();
+      await loadCategories();
+    } catch (error) {
+      notify(error.message);
+      console.error("Error guardando categoría:", error);
+    }
+
+    return;
+  }
+
+  // Los demás módulos conservan el almacenamiento local
   if (editId) {
     const i = data[activeView].findIndex(
-      (x) => String(x[c.key]) === String(editId),
+      (x) => String(x[c.key]) === String(editId)
     );
+
     data[activeView][i] = { ...data[activeView][i], ...obj };
   } else {
     obj[c.key] = nextId(activeView, c.key);
     data[activeView].push(obj);
   }
+
   save();
   closeForm();
   render(activeView);
